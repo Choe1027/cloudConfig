@@ -1,1 +1,29 @@
 test: dev1026fsafasfsa
+
+#数据库配置
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/stock?useUnicode=true&characterEncoding=utf8&useSSL=false&createDatabaseIfNotExist=true&allowMultiQueries=true
+    username: root
+    password: admin
+    initial-size: 5
+    max-active: 50
+    min-idle: 1
+    max-wait: 60000
+  # 打开PSCache，并且指定每个连接上PSCache的大小
+    pool-prepared-statements: true
+    max-pool-prepared-statement-per-connection-size: 20
+  # MySQL 连接八小时问题
+    validation-query: SELECT 1
+    validation-query-timeout: 60000
+    test-on-borrow: false
+    test-on-return: false
+  # 默认为stat,即开启sql监控。这里加了个wall,表示同时开启sql防火墙
+    filters: stat
+    connectionProperties: druid.stat.mergeSql = true; druid.stat.slowSqlMillis = 5000
+
+  #MyBatis配置
+mybatis:
+  typeAliasesPackage: com.choe.cloud.stock
+  mapperLocations: classpath*\:com/choe/cloud/**/mapper/*Mapper.xml
